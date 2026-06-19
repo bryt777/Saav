@@ -1,4 +1,9 @@
-export interface SaveFile {
-  name: string;
-  data: number[];
+export interface GraphicsSettings {
+  artQuality: number;
+  fpsLevel: number;
+  brightness: number;
+}
+
+export interface SaveData {
+  graphics: GraphicsSettings;
 }
