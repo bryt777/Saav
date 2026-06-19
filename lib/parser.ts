@@ -1,27 +1,41 @@
-export function parseSave(buffer: Buffer) {
-  const text = buffer.toString("latin1");
+export interface SaveSettings {
+  artQuality: number;
+  fpsLevel: number;
+  brightness: number;
+  crosshairColor: number;
+  mainVolume: number;
+  uiVolume: number;
+}
 
-  function getInt(key: string) {
-    const idx = text.indexOf(key);
+function readInt(buffer: Buffer, key: string) {
+  const idx = buffer.indexOf(key);
 
-    if (idx === -1) return 0;
+  if (idx === -1) return 0;
 
-    return buffer.readInt32LE(idx + key.length + 29);
-  }
+  return buffer.readInt32LE(idx + key.length + 29);
+}
 
-  function getFloat(key: string) {
-    const idx = text.indexOf(key);
+function readFloat(buffer: Buffer, key: string) {
+  const idx = buffer.indexOf(key);
 
-    if (idx === -1) return 0;
+  if (idx === -1) return 0;
 
-    return buffer.readFloatLE(idx + key.length + 33);
-  }
+  return buffer.readFloatLE(idx + key.length + 33);
+}
 
+export function parseSave(buffer: Buffer): SaveSettings {
   return {
-    artQuality: getInt("ArtQuality"),
-    fpsLevel: getInt("FPSLevel"),
+    artQuality: readInt(buffer, "ArtQuality"),
+    fpsLevel: readInt(buffer, "FPSLevel"),
     brightness: Math.round(
-      getFloat("ScreenLightness") * 100
+      readFloat(buffer, "ScreenLightness") * 100
+    ),
+    crosshairColor: readInt(buffer, "HolographicCHColor"),
+    mainVolume: Math.round(
+      readFloat(buffer, "MainVolumValue") * 100
+    ),
+    uiVolume: Math.round(
+      readFloat(buffer, "UIVolumValue") * 100
     )
   };
 }
