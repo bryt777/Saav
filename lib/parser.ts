@@ -1,13 +1,27 @@
-import { SaveData } from "./types";
-
-export function parseSave(buffer: Buffer): SaveData {
+export function parseSave(buffer: Buffer) {
   const text = buffer.toString("latin1");
 
+  function getInt(key: string) {
+    const idx = text.indexOf(key);
+
+    if (idx === -1) return 0;
+
+    return buffer.readInt32LE(idx + key.length + 29);
+  }
+
+  function getFloat(key: string) {
+    const idx = text.indexOf(key);
+
+    if (idx === -1) return 0;
+
+    return buffer.readFloatLE(idx + key.length + 33);
+  }
+
   return {
-    graphics: {
-      artQuality: text.includes("ArtQuality") ? 1 : 0,
-      fpsLevel: text.includes("FPSLevel") ? 1 : 0,
-      brightness: text.includes("ScreenLightness") ? 30 : 0
-    }
+    artQuality: getInt("ArtQuality"),
+    fpsLevel: getInt("FPSLevel"),
+    brightness: Math.round(
+      getFloat("ScreenLightness") * 100
+    )
   };
 }
