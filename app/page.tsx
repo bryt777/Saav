@@ -1,4 +1,5 @@
 import SplashScreen from "@/components/SplashScreen";
+import UploadBox from "@/components/UploadBox";
 
 export default function Home() {
   return (
@@ -22,22 +23,14 @@ export default function Home() {
             <div className="mt-10 space-y-2 text-zinc-300">
 
               <div>✓ Graphics</div>
-
               <div>✓ Brightness</div>
-
               <div>✓ Crosshair</div>
-
               <div>✓ Sensitivity</div>
-
               <div>✓ Audio</div>
 
             </div>
 
-            <button
-              className="mt-10 w-full rounded-2xl bg-white px-6 py-4 text-black font-semibold"
-            >
-              Upload Active.sav
-            </button>
+            <UploadBox />
 
           </div>
 
