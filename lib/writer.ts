@@ -1,4 +1,4 @@
-export function setInt(
+export function writeInt(
   buffer: Buffer,
   key: string,
   value: number
@@ -13,7 +13,7 @@ export function setInt(
   );
 }
 
-export function setFloat(
+export function writeFloat(
   buffer: Buffer,
   key: string,
   value: number
